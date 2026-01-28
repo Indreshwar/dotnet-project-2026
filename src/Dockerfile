@@ -1,15 +1,10 @@
-# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
+COPY . ./src
 WORKDIR /src
-COPY . .
 RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
-
-# Stage 2: Runtime
+RUN dotnet publish -c Release -o /app/published
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app/publish .
-
+COPY --from=build /app/published .
 EXPOSE 5000
-CMD ["dotnet", "dotnet-demoapp.dll"]
+CMD ["dotnet","dotnet-demoapp.dll"]
