@@ -2,9 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 COPY . ./src
 WORKDIR /src
 RUN dotnet restore
-RUN dotnet publish -c Release -o /app/published
+RUN dotnet publish -c Release -o /published
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=build /app/published .
+COPY --from=build /published .
 EXPOSE 5000
 CMD ["dotnet","dotnet-demoapp.dll"]
